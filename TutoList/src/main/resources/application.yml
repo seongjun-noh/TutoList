@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: TutoList
+  jpa:
+    hibernate:
+      ddl-auto: create #create, create-drop, update ...
+    properties:
+      hibernate:
+        show_sql: true
+        database-platform: org.hibernate.dialect.MariaDB103Dialect
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/tutoring?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password:
+
+auth:
+  login:
+    username: username
+    password: password
+    url: /login
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: TRACE
+#      org:
+#        springframework: DEBUG
