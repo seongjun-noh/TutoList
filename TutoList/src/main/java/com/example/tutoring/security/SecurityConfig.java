@@ -44,7 +44,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
 
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/home").permitAll()
+                .requestMatchers("/", "/check-session").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
