@@ -24,7 +24,7 @@ public class DataInitializer {
             // 데이터베이스에 사용자가 존재하지 않을 경우 기본 사용자 생성
             if (userRepository.count() == 0) {
                 UserEntity admin = UserEntity.builder()
-                    .username("admin")
+                    .username("admin1")
                     .password(encode)
                     .name("ADMIN")
                     .role(UserRole.ADMIN)

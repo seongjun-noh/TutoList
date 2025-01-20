@@ -11,12 +11,12 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
 
+import com.example.tutoring.security.dto.LoginDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -48,7 +48,7 @@ public class JsonUsernamePasswordFilter extends AbstractAuthenticationProcessing
             throw new AuthenticationServiceException("Authentication Content-Type not supported: " + request.getContentType());
         }
 
-        LoginDto loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.class);
+        LoginDto.Request loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.Request.class);
 
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
@@ -65,11 +65,5 @@ public class JsonUsernamePasswordFilter extends AbstractAuthenticationProcessing
 
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
-    }
-
-    @Data
-    private static class LoginDto {
-        String username;
-        String password;
     }
 }

@@ -16,7 +16,7 @@ import jakarta.validation.Payload;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidUsername {
-    String message() default "아이디 형식이 올바르지 않습니다.";
+    String message() default "ERROR_INVALID_USERNAME";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

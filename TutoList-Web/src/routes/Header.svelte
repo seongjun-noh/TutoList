@@ -1,7 +1,47 @@
 <script>
 	import { page } from '$app/state';
+	import { t } from 'svelte-i18n';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
+	import { onMount } from 'svelte';
+
+	const onClickLogoutBtn = () => {
+		fetch('/api/logout', {
+			method: 'POST',
+			credentials: 'include'
+		})
+		.then((res) => res.json())
+		.then((data) => {
+			if (!data.ok) {
+				console.error($t('logout.fail'));
+				return;
+			}
+
+			location.href = '/login';
+		})
+		.catch((error) => {
+			console.error('Error logging out:', error);
+		});
+	}
+
+	let currentTheme = 'system';
+
+	const setTheme = (theme) => {
+		currentTheme = theme;
+		document.documentElement.setAttribute('data-theme', theme);
+		localStorage.setItem('theme', theme);
+	};
+
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme) {
+			setTheme(savedTheme);
+		} else {
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			const defaultTheme = prefersDark ? 'dark' : 'light';
+			setTheme(defaultTheme);
+		}
+	});
 </script>
 
 <header class="lg:border-b">
@@ -12,12 +52,43 @@
 				TutoList
 			</a>
 		</div>
-	
-		<select class="select select-bordered" data-choose-theme data-key="selected-theme" bind:this={page.theme}>
-			<option value="">OS Default</option>
-			<option value="light">Light</option>
-			<option value="dark">Dark</option>
-		</select>
+		
+		<div title="Change Theme" class="dropdown dropdown-end">
+			<div tabindex="0" role="button" class="btn btn-ghost">
+				<span class="hidden font-normal md:inline">테마 변경</span>
+			</div>
+
+			<div class="dropdown-content bg-base-200 text-base-content mt-2 w-32 p-2 shadow flex flex-col gap-2">
+				<button
+					on:click={() => setTheme('system')}
+					class="btn"
+					aria-current={currentTheme === 'system' ? 'true' : 'false'}>
+					{#if currentTheme === 'system'}
+						<img src="/src/lib/images/icon/check.svg" alt="Icon" />
+					{/if}
+					Default
+				</button>
+				<button
+					on:click={() => setTheme('light')}
+					class="btn"
+					aria-current={currentTheme === 'light' ? 'true' : 'false'}>
+					{#if currentTheme === 'light'}
+						<img src="/src/lib/images/icon/check.svg" alt="Icon" />
+					{/if}
+					Light
+				</button>
+				<button
+					on:click={() => setTheme('dark')}
+					class="btn"
+					aria-current={currentTheme === 'dark' ? 'true' : 'false'}>
+					{#if currentTheme === 'dark'}
+						<img src="/src/lib/images/icon/check.svg" alt="Icon" />
+					{/if}
+					Dark
+				</button>
+			</div>
+		</div>
+		<button on:click|preventDefault={onClickLogoutBtn}>{$t('logout')}</button>
 	</div>
 </div>
 </header>

@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"daisyui": "^4.12.23",
+		"svelte-i18n": "^4.0.1",
 		"theme-change": "^2.5.0"
 	}
 }

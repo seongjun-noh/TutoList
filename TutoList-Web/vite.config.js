@@ -3,6 +3,13 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	resolve: {
+    alias: {
+      $components: '/src/lib/components',
+			$utils: '/src/lib/utils',
+			$images: '/src/lib/images'
+    }
+  },
 	server:{
 		port:3000,
 		strictPort:false,

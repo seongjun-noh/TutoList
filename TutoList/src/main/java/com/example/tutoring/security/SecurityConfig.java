@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.tutoring.security.filter.JsonUsernamePasswordFilter;
+import com.example.tutoring.security.handler.CustomLogoutSuccessHandler;
 import com.example.tutoring.security.handler.LoginFailureHandler;
 import com.example.tutoring.security.handler.LoginSuccessHandler;
 import com.example.tutoring.security.service.PrincipalDetailsService;
@@ -34,6 +35,7 @@ public class SecurityConfig {
 
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
+    private final CustomLogoutSuccessHandler logoutSuccessHandler;
 
     private final ObjectMapper objectMapper;
 
@@ -44,14 +46,15 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
 
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/check-session").permitAll()
+                .requestMatchers("/", "/check-session", "/users/signup/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/")
+                .permitAll()
             )
             .logout(logout -> logout
                 .permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler)
             )
             .addFilterBefore(jsonUsernamePasswordFilter(), UsernamePasswordAuthenticationFilter.class);
 

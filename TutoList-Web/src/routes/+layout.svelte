@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
 
-	import Footer from './Footer.svelte';
+	import Footer from './(app)/Footer.svelte';
   import Header from './Header.svelte';
 
   import { onMount } from 'svelte';

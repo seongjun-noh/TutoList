@@ -42,7 +42,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             message = "ERROR_UNKNOWN";
         }
 
-        ApiResponse<Object> responseBody = ApiResponse.isError(401, "ERROR_UNKNOWN");
+        ApiResponse<Object> responseBody = ApiResponse.isError("ERROR_UNKNOWN");
         response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
 }
