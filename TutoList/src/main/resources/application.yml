@@ -1,3 +1,15 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        secure: true
+        same-site: none
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: changeit
+
 spring:
   application:
     name: TutoList
@@ -19,6 +31,9 @@ auth:
     username: username
     password: password
     url: /login
+    remember-me:
+      name: remember-me
+      key: test
 
 logging:
   level:
@@ -28,5 +43,4 @@ logging:
         type:
           descriptor:
             sql: TRACE
-#      org:
-#        springframework: DEBUG
+#      springframework: DEBUG

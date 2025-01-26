@@ -4,24 +4,23 @@
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
 	import { onMount } from 'svelte';
+	import apiClient from '$lib/utils/apiClient';
 
 	const onClickLogoutBtn = () => {
-		fetch('/api/logout', {
-			method: 'POST',
-			credentials: 'include'
-		})
-		.then((res) => res.json())
-		.then((data) => {
-			if (!data.ok) {
-				console.error($t('logout.fail'));
-				return;
-			}
-
-			location.href = '/login';
-		})
-		.catch((error) => {
-			console.error('Error logging out:', error);
-		});
+		apiClient.post('/logout', {
+			withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      // 메인 페이지로 이동
+      location.href = '/login';
+    })
+    .catch((error) => {
+      console.error('Logout error:', error);
+      throw error; // 에러를 호출한 곳으로 다시 던짐
+    });
 	}
 
 	let currentTheme = 'system';

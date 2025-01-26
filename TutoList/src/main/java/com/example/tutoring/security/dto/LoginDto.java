@@ -15,7 +15,6 @@ public class LoginDto {
 	@Builder
 	@AllArgsConstructor
 	public static class Response {
-		private String username;
-		private String password;
+
 	}
 }

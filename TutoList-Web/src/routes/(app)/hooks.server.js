@@ -7,7 +7,7 @@ export async function handle({ event, resolve }) {
   const { cookies, url } = event;
 
   // 로그인 페이지는 예외 처리
-  if (url.pathname === '/login' || url.pathname === '/api/check-session') {
+  if (url.pathname === '/login' || url.pathname === '/api/login/check') {
     return resolve(event);
   }
 

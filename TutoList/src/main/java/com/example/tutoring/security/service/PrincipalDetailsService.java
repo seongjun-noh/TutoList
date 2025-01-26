@@ -23,6 +23,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 			.orElseThrow(() -> new UsernameNotFoundException("유저 정보를 찾지 못했습니다."));
 
 		PrincipalDetails principalDetails = new PrincipalDetails(
+			user.getId(),
 			user.getUsername(),
 			user.getPassword(),
 			user.getRole()

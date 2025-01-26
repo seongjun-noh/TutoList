@@ -21,14 +21,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        request.getSession(true);
+        HttpStatus status = HttpStatus.OK;
 
-        response.setStatus(HttpStatus.OK.value());
+        ApiResponse responseBody = new ApiResponse<>(status.value(), null, null);
+
+        response.setStatus(status.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-
-        String responseBody = objectMapper.writeValueAsString(ApiResponse.isSuccess(null));
-        response.getWriter().write(responseBody);
-        response.getWriter().flush();
+        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
 }

@@ -1,5 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
 	plugins: [sveltekit()],
@@ -10,12 +12,19 @@ export default defineConfig({
 			$images: '/src/lib/images'
     }
   },
+	optimizeDeps: {
+		include: ["rrule"],
+	},
 	server:{
 		port:3000,
 		strictPort:false,
+		https: {
+			key: fs.readFileSync(path.resolve('./.cert/key.pem')),
+			cert: fs.readFileSync(path.resolve('./.cert/cert.pem'))
+		},
 		proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

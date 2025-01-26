@@ -10,14 +10,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.tutoring.dmain.user.enums.UserRole;
 
 public class PrincipalDetails implements UserDetails {
+	private Long userId;
 	private String username;
 	private String password;
 	private UserRole role;
 
-	public PrincipalDetails(String username, String password, UserRole role) {
+	public PrincipalDetails(Long userId, String username, String password, UserRole role) {
+		this.userId = userId;
 		this.username = username;
 		this.password = password;
 		this.role = role;
+	}
+
+	public Long getUserId() {
+		return this.userId;
 	}
 
 	@Override

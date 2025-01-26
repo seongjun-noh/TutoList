@@ -39,7 +39,7 @@ public class XssProtectFilter implements Filter {
                 Map<String, Object> oldJsonObject = new ObjectMapper().readValue(body, HashMap.class);
                 Map<String, Object> newJsonObject = new HashMap<>();
                 oldJsonObject.forEach((key, value) ->
-                    newJsonObject.put(key, XssUtils.charEscape(value.toString()))
+                    newJsonObject.put(key, value != null ? XssUtils.charEscape(value.toString()) : null)
                 );
                 byte[] newBody = new ObjectMapper()
                     .writerWithDefaultPrettyPrinter()

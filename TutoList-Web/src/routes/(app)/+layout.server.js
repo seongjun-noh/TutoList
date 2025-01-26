@@ -1,9 +1,8 @@
-// src/routes/+layout.js
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ fetch }) {
   try {
-    const res = await fetch('/api/check-session', {
+    const res = await fetch('/api/login/check', {
       method: 'GET',
       credentials: 'include',
     });
@@ -11,12 +10,6 @@ export async function load({ fetch }) {
     if (!res.ok) {
       console.error('Invalid session:', res.status);
       throw redirect(302, '/login'); // 서버에서 리다이렉트
-    }
-
-    const data = await res.json();
-    if (!data?.data) {
-      console.error('Session expired');
-      throw redirect(302, '/login'); // 세션 만료 시 리다이렉트
     }
 
     return {

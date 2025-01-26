@@ -1,69 +1,64 @@
 package com.example.tutoring.security.filter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StreamUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.tutoring.security.dto.LoginDto;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 
-@Slf4j
-public class JsonUsernamePasswordFilter extends AbstractAuthenticationProcessingFilter {
-
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/login";  // /login/oauth2/ + ????? 로 오는 요청을 처리할 것이다
-    private static final String HTTP_METHOD = "POST";    //HTTP 메서드의 방식은 POST 이다.
-    private static final String CONTENT_TYPE = "application/json";//json 타입의 데이터로만 로그인을 진행한다.
-    private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
-        new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD); //=>   /login 의 요청에, POST로 온 요청에 매칭된다.
-
+@RequiredArgsConstructor
+public class JsonUsernamePasswordFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper;
 
-    public JsonUsernamePasswordFilter(ObjectMapper objectMapper
-    ) {
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        if (!request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getContentType());
+        }
 
-        super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);   // 위에서 설정한  /oauth2/login/* 의 요청에, GET으로 온 요청을 처리하기 위해 설정한다.
+        try (InputStream inputStream = request.getInputStream()) {
+            JsonNode jsonNode = objectMapper.readTree(inputStream);
+            String username = jsonNode.get("username").asText();
+            String password = jsonNode.get("password").asText();
 
-        this.objectMapper = objectMapper;
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+            setDetails(request, authRequest);
+
+            return this.getAuthenticationManager().authenticate(authRequest);
+        } catch (IOException e) {
+            throw new AuthenticationServiceException("Error parsing JSON request", e);
+        }
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
-        AuthenticationException,
-        IOException,
-        ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        if (request.getContentType() == null || !request.getContentType().equals(CONTENT_TYPE)) {
-            throw new AuthenticationServiceException("Authentication Content-Type not supported: " + request.getContentType());
-        }
+        SecurityContextHolder.getContext().setAuthentication(authResult); // SecurityContext에 인증 정보 저장
+        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext()); // 세션에 저장
 
-        LoginDto.Request loginDto = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDto.Request.class);
 
-        String username = loginDto.getUsername();
-        String password = loginDto.getPassword();
-
-        if (username == null || password == null) {
-            throw new AuthenticationServiceException("DATA IS MISS");
-        }
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-        // Allow subclasses to set the "details" property
-        setDetails(request, authRequest);
-        return this.getAuthenticationManager().authenticate(authRequest);
     }
 
-    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
-        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
-    }
+    // @Override
+    // protected void unsuccessfulAuthentication(
+    //     HttpServletRequest request,
+    //     HttpServletResponse response,
+    //     AuthenticationException failed) throws IOException {
+    //     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //     response.getWriter().write("Authentication failed: " + failed.getMessage());
+    // }
 }

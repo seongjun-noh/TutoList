@@ -8,6 +8,8 @@
   import ErrorMessage from '$components/ErrorMessage.svelte';
   import { isValidUsername, isValidPassword } from '$utils/validations';
 	import TextInputWithIcon from '$lib/components/TextInputWithIcon.svelte';
+	import axios from 'axios';
+	import apiClient from '$lib/utils/apiClient';
 
   let loginErrorMessage = ''; // 비밀번호 오류 메시지 변수
 
@@ -19,26 +21,20 @@
       loginErrorMessage = $t('login.fail');
       return;
     }
-    
-    fetch('/api/login', {
-      method: 'POST',
+
+    apiClient.post('/login', data, {
+      disableBlockUI: true,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      credentials: 'include',
-      body: JSON.stringify(data)
     })
-    .then((res) => res.json())
-    .then((data) => {
-      if (!data.ok) {
-        loginErrorMessage = $t('login.fail');
-        return;
-      }
-      
+    .then((response) => {
+      // 메인 페이지로 이동
       location.href = '/';
     })
     .catch((error) => {
-      console.error('Error creating post:', error);
+      console.error('Login error:', error);
+      throw error; // 에러를 호출한 곳으로 다시 던짐
     });
   }
 </script>
@@ -62,7 +58,7 @@
       </form>
       <div class="flex gap-1 flex-col">
         <label>
-          <input type="checkbox" id="keeplogin" name="keeplogin" value="keeplogin" />
+          <input type="checkbox" id="keeplogin" name="rememberMe" value="keeplogin" />
           <span>{$t('login.keep')}</span>
         </label>
         <label>
