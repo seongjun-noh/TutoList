@@ -14,15 +14,28 @@ public class CalendarEventCustomRepositoryImpl implements CalendarEventCustomRep
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public List<CalendarEventEntity> findUserCalendarEventByCondition(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+	public List<CalendarEventEntity> findTeacherCalendarEventByCondition(Long teacherUserId, LocalDateTime startDate, LocalDateTime endDate) {
 		QCalendarEventEntity qCalendarEvent = QCalendarEventEntity.calendarEventEntity;
 
 		return queryFactory.selectFrom(qCalendarEvent)
 			.where(
-				qCalendarEvent.user.id.eq(userId)
+				qCalendarEvent.teacherUser.id.eq(teacherUserId)
 					.and(qCalendarEvent.start.between(startDate, endDate))
 			)
-			.leftJoin(qCalendarEvent.user)
+			.leftJoin(qCalendarEvent.teacherUser)
+			.fetch();
+	}
+
+	@Override
+	public List<CalendarEventEntity> findTeachersStudentCalendarEventByCondition(Long teacherUserId, Long studentId, LocalDateTime startDate, LocalDateTime endDate) {
+		QCalendarEventEntity qCalendarEvent = QCalendarEventEntity.calendarEventEntity;
+
+		return queryFactory.selectFrom(qCalendarEvent)
+			.where(
+				qCalendarEvent.teacherUser.id.eq(teacherUserId)
+					.and(qCalendarEvent.start.between(startDate, endDate))
+			)
+			.leftJoin(qCalendarEvent.teacherUser)
 			.fetch();
 	}
 }

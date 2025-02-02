@@ -3,6 +3,7 @@ package com.example.tutoring.dmain.calendar.entity;
 import java.time.LocalDateTime;
 
 import com.example.tutoring.cmmn.entity.BaseEntity;
+import com.example.tutoring.dmain.students.entity.LessonEntity;
 import com.example.tutoring.dmain.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -16,11 +17,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "CALENDAR_EVENT")
@@ -48,6 +51,10 @@ public class CalendarEventEntity extends BaseEntity {
 	private String rrule;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USER_ID", nullable = false, updatable = false)
-	private UserEntity user;
+	@JoinColumn(name = "TEACHER_ID", nullable = false, updatable = false)
+	private UserEntity teacherUser;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "LESSON_ID")
+	private LessonEntity lesson;
 }

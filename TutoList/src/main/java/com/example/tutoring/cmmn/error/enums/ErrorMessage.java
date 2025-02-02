@@ -14,6 +14,8 @@ public enum ErrorMessage {
 	ERROR_INVALID_DATE_RANGE("유효하지 않은 날짜범위입니다."),
 	ERROR_INVALID_RRULE("유효하지 않은 RRULE입니다."),
 
+	ERROR_STUDENT_NOT_FOUND("학생 정보를 찾을 수 없습니다."),
+
 	// 인증/권한 에러
 	ERROR_UNAUTHORIZED("인증되지 않은 사용자입니다."),
 	ERROR_FORBIDDEN("권한이 없는 사용자입니다."),

@@ -46,7 +46,7 @@
         <h1 class="card-title">{$t('login.title')}</h1>
       </div>
 
-      <form action="/login" method="post" on:submit|preventDefault={onSubmitLoginForm}>
+      <form on:submit|preventDefault={onSubmitLoginForm}>
         <div class="flex gap-5 flex-col">
           <div class="flex gap-4 flex-col">
             <TextInputWithIcon type="text" name="username" placeholder={$t('id')} icon="/src/lib/images/icon/people.svg"/>

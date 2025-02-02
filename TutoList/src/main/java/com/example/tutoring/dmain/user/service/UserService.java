@@ -24,9 +24,9 @@ public class UserService {
 	private static PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
 	public void signup(UserSignupDto.Request info) {
-		if (info.getRole() == UserRole.ADMIN) {
-			throw new CustomException(ErrorMessage.ERROR_INVALID_ROLE);
-		}
+		// if (info.getRole() == UserRole.ADMIN) {
+		// 	throw new CustomException(ErrorMessage.ERROR_INVALID_ROLE);
+		// }
 
 		boolean isExistsUsername = userRepository.existsByUsername(info.getUsername());
 		if (isExistsUsername) {
@@ -40,7 +40,8 @@ public class UserService {
 			.username(info.getUsername())
 			.password(encodedPassword)
 			.name(info.getName())
-			.role(info.getRole())
+			.email(info.getEmail())
+			.role(UserRole.TEACHER)
 			.build();
 
 		userRepository.save(user);

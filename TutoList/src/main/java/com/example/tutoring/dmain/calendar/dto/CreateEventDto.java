@@ -1,6 +1,7 @@
 package com.example.tutoring.dmain.calendar.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +31,8 @@ public class CreateEventDto {
 
 		@Setter
 		private String rrule;
+
+		private List<Long> studentIdList;
 	}
 
 	@Getter

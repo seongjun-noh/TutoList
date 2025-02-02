@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final UserService userService;
 
-	@PostMapping("/users/signup")
+	@PostMapping("/signup")
 	public ApiResponse<Object> userSignup(@RequestBody @Valid UserSignupDto.Request requestBody) {
 
 		userService.signup(requestBody);

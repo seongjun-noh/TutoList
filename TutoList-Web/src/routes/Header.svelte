@@ -51,6 +51,11 @@
 				TutoList
 			</a>
 		</div>
+
+		<div class="flex">
+			<a href="/calendar">calendar</a>
+			<a href="/students">students</a>
+		</div>
 		
 		<div title="Change Theme" class="dropdown dropdown-end">
 			<div tabindex="0" role="button" class="btn btn-ghost">

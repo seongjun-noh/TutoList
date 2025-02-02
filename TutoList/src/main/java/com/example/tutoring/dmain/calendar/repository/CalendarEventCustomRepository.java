@@ -6,5 +6,7 @@ import java.util.List;
 import com.example.tutoring.dmain.calendar.entity.CalendarEventEntity;
 
 public interface CalendarEventCustomRepository {
-	List<CalendarEventEntity> findUserCalendarEventByCondition(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+	List<CalendarEventEntity> findTeacherCalendarEventByCondition(Long teacherUserId, LocalDateTime startDate, LocalDateTime endDate);
+
+	List<CalendarEventEntity> findTeachersStudentCalendarEventByCondition(Long teacherUserId, Long studentId, LocalDateTime startDate, LocalDateTime endDate);
 }

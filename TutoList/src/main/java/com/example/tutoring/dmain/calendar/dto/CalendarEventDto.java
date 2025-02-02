@@ -27,5 +27,5 @@ public class CalendarEventDto {
 
 	private String rrule;
 
-	private Long userId;
+	private Long teacherId;
 }

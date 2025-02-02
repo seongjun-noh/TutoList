@@ -1,0 +1,41 @@
+{
+  "id": "아이디",
+  "password": "비밀번호",
+  "name": "이름",
+  "find": "찾기",
+  "close": "닫기",
+  "title": "제목",
+  "save": "저장",
+  "cancel": "취소",
+  "start": "시작",
+  "end": "종료",
+  "date": "날짜",
+  "time": "시간",
+  "allDay": "종일",
+  "repeat": "반복",
+  "add": "추가",
+  "event": "일정",
+  "signup": "회원가입",
+  "login": "로그인",
+  "logout": "로그아웃",
+  "reset": "초기화",
+  "setting": "설정",
+  "description": "설명",
+
+  "signup.title": "회원가입",
+  "signup.success": "회원가입이 완료되었습니다.",
+  "signup.fail": "회원가입에 실패했습니다. 다시 시도해 주세요.",
+
+  "login.title": "로그인",
+  "login.success": "로그인 되었습니다.",
+  "login.keep": "로그인 유지",
+  "login.remember": "ID 기억하기",
+  "login.fail": "아이디(로그인 전화번호, 로그인 전용 아이디) 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.",
+
+  "logout.fail": "로그아웃에 실패했습니다. 다시 시도해 주세요.",
+
+  "errors.required": "필수 입력 항목입니다.",
+  "errors.invalid.username": "아이디는 6~20자이며, 영어 알파벳과 숫자만 허용됩니다.",
+  "errors.invalid.password": "비밀번호는 8~20자이며, 최소 하나의 문자, 숫자, 특수문자를 포함해야 합니다.",
+  "errors.exists.username": "이미 사용중인 아이디입니다."
+}

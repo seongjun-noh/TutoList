@@ -13,7 +13,6 @@ import com.example.tutoring.dmain.calendar.dto.CreateEventDto;
 import com.example.tutoring.dmain.calendar.entity.CalendarEventEntity;
 import com.example.tutoring.dmain.calendar.mapper.CalendarEventMapper;
 import com.example.tutoring.dmain.calendar.repository.CalendarEventRepository;
-import com.example.tutoring.dmain.user.entity.UserEntity;
 import com.example.tutoring.dmain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,10 +26,7 @@ public class CalendarEventService {
 	private final CalendarEventMapper calendarEventMapper;
 
 	@Transactional
-	public CreateEventDto.Response createEvent(long userId, CreateEventDto.Request requestBody) {
-
-		UserEntity user = userRepository.findById(userId)
-			.orElseThrow(() -> new CustomException(ErrorMessage.ERROR_USER_NOT_FOUND));
+	public CreateEventDto.Response createEvent(long teacherId, CreateEventDto.Request requestBody) {
 
 		if (requestBody.getStart().isAfter(requestBody.getEnd())) {
 			throw new CustomException(ErrorMessage.ERROR_INVALID_DATE_RANGE);
@@ -42,7 +38,7 @@ public class CalendarEventService {
 			requestBody.setRrule(null);
 		}
 
-		CalendarEventEntity calendarEvent = calendarEventMapper.toEntity(user, requestBody);
+		CalendarEventEntity calendarEvent = calendarEventMapper.toEntity(teacherId, requestBody);
 
 		CalendarEventEntity savedCalendarEvent = calendarEventRepository.save(calendarEvent);
 
@@ -53,7 +49,7 @@ public class CalendarEventService {
 
 	public CalendarEventListDto.Response getUserCalendarEventList(long userId, CalendarEventListDto.Request requestBody) {
 
-		List<CalendarEventEntity> calendarEventList = calendarEventRepository.findUserCalendarEventByCondition(userId, requestBody.getStartDate(), requestBody.getEndDate());
+		List<CalendarEventEntity> calendarEventList = calendarEventRepository.findTeacherCalendarEventByCondition(userId, requestBody.getStartDate(), requestBody.getEndDate());
 
 		List<CalendarEventDto> calendarEventDtoList = calendarEventList.stream().map(calendarEventMapper::toDto).toList();
 
