@@ -8,14 +8,33 @@
     Phone,
     Mail
   } from 'lucide-svelte';
-  import StudentProfile from '$lib/components/StudentProfile.svelte';
+  import StudentProfile from './StudentProfile.svelte';
+	import { onMount } from 'svelte';
+	import apiClient from '$lib/utils/apiClient.js';
   
-  export let data; // 페이지 데이터
+  let lesson;
+
+  onMount(async () => {
+    await fetchLesson();
+  });
+
+  async function fetchLesson() {
+    const url = `/lessons/${$page.params.lessonId}`
+    try {
+			const response = await apiClient.get(url);
+
+			lesson = response.data.data;
+      console.log(lesson);
+		} catch (error) {
+			console.error('Error fetching calendar events:', error);
+			throw error;
+		}
+  }
 </script>
 
 <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
   <div class="flex items-center">
-    <a href="/students" class="flex items-center text-gray-600 hover:text-gray-900">
+    <a href="/lessons" class="flex items-center text-gray-600 hover:text-gray-900">
       <ChevronLeft class="h-5 w-5 mr-2" />
       <span class="text-sm">수업 목록으로 돌아가기</span>
     </a>
@@ -33,5 +52,7 @@
 </header>
 
 <main class="flex-1 overflow-auto p-8">
-  <StudentProfile student={data.student} />
+  {#if lesson}
+    <StudentProfile lesson={lesson} />
+  {/if}
 </main>

@@ -8,7 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import com.example.tutoring.dmain.calendar.dto.CalendarEventDto;
 import com.example.tutoring.dmain.calendar.dto.CreateEventDto;
 import com.example.tutoring.dmain.calendar.entity.CalendarEventEntity;
-import com.example.tutoring.dmain.students.entity.LessonEntity;
+import com.example.tutoring.dmain.lessons.entity.LessonEntity;
 import com.example.tutoring.dmain.user.entity.UserEntity;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = "spring")

@@ -94,9 +94,6 @@
   }
 
   async function onSubmitRegistStudentForm() {
-    console.log('rrule:', convertLessonRuleToRRule());
-    console.log('formData:', formData);
-
     const data = {
       name: formData.lessonName,
       subject: formData.subjects,
@@ -114,7 +111,10 @@
 				},
 			});
 
-			console.log(response);
+      alert("수업을 등록하였습니다.");
+
+			const lessonId = response.data.data.id;
+      location.href = `/lessons/${lessonId}`;
 		} catch (error) {
 			console.error('Error fetching calendar events:', error);
 			throw error;

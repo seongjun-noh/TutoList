@@ -1,5 +1,7 @@
 <!-- src/lib/components/StudentProfile.svelte -->
 <script>
+	import { formatDate, formatTime } from '$lib/utils/dateTimeUtil';
+	import { translateRRule } from '$lib/utils/rruleUtil';
   import { 
     Phone, 
     Mail, 
@@ -9,17 +11,18 @@
   } from 'lucide-svelte';
 
   // 학생 데이터 props 받기
-  export let student = {
-    name: "김민준",
-    grade: "고등학교 2학년",
-    phone: "010-1234-5678",
-    email: "student@email.com",
-    startDate: "2024년 1월 15일",
-    subject: "수학",
-    frequency: "주 2회",
-    schedule: "월/수 17:00-19:00",
-    fee: "월 400,000원"
-  };
+  export let lesson
+  //  = {
+  //   name: "김민준",
+  //   grade: "고등학교 2학년",
+  //   phone: "010-1234-5678",
+  //   email: "student@email.com",
+  //   startDate: "2024년 1월 15일",
+  //   subject: "수학",
+  //   frequency: "주 2회",
+  //   schedule: "월/수 17:00-19:00",
+  //   fee: "월 400,000원"
+  // };
 
   // 최근 진도 데이터
   const recentProgress = [
@@ -60,8 +63,8 @@
   ];
 </script>
 
-<!-- 학생 프로필 섹션 -->
-<div class="grid grid-cols-3 gap-6 mb-8">
+ <!-- 학생 프로필 섹션 -->
+ <div class="grid grid-cols-3 gap-6 mb-8">
   <div class="col-span-2 bg-white p-6 rounded-lg shadow-sm">
     <div class="flex items-start justify-between">
       <div class="flex items-center space-x-4">
@@ -69,23 +72,25 @@
           <Users class="h-10 w-10 text-blue-600" />
         </div>
         <div>
-          <h2 class="text-2xl font-bold text-gray-900">{student.name}</h2>
-          <p class="text-gray-500">{student.grade}</p>
+          <h2 class="text-2xl font-bold text-gray-900">{lesson.name}</h2>
+
+          <p class="text-gray-500">{lesson.memo}</p>
           <div class="mt-2 flex space-x-4">
-            <div class="flex items-center text-gray-600">
+            <!-- <div class="flex items-center text-gray-600">
               <Phone class="h-4 w-4 mr-2" />
               <span>{student.phone}</span>
             </div>
             <div class="flex items-center text-gray-600">
               <Mail class="h-4 w-4 mr-2" />
               <span>{student.email}</span>
-            </div>
+            </div> -->
           </div>
+
         </div>
       </div>
       <div class="text-right">
         <div class="text-sm text-gray-500">수업 시작일</div>
-        <div class="font-medium">{student.startDate}</div>
+        <div class="font-medium">{formatDate(lesson.startDate, "YYYY-MM-DD", "YYYY년 M월 D일")}</div>
       </div>
     </div>
   </div>
@@ -96,26 +101,26 @@
     <div class="space-y-4">
       <div class="flex justify-between items-center">
         <span class="text-gray-600">과목</span>
-        <span class="font-medium">{student.subject}</span>
+        <span class="font-medium">{lesson.subject}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="text-gray-600">수업 횟수</span>
-        <span class="font-medium">{student.frequency}</span>
+        <span class="text-gray-600">수업 주기</span>
+        <span class="font-medium">{translateRRule(lesson.rrule)}</span>
       </div>
       <div class="flex justify-between items-center">
         <span class="text-gray-600">수업 시간</span>
-        <span class="font-medium">{student.schedule}</span>
+        <span class="font-medium">{formatTime(lesson.startTime, "HH:mm:SS", "A H시 m분")} ({lesson.duration}분)</span>
       </div>
-      <div class="flex justify-between items-center">
+      <!-- <div class="flex justify-between items-center">
         <span class="text-gray-600">수업료</span>
-        <span class="font-medium">{student.fee}</span>
-      </div>
+        <span class="font-medium">{lesson.fee}</span>
+      </div> -->
     </div>
   </div>
 </div>
 
 <!-- 진도 현황 섹션 -->
-<div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+<!-- <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
   <h3 class="text-lg font-medium mb-4">최근 진도</h3>
   <div class="space-y-3">
     {#each recentProgress as progress}
@@ -125,10 +130,10 @@
       </div>
     {/each}
   </div>
-</div>
+</div> -->
 
 <!-- 수업 이력 섹션 -->
-<div class="bg-white rounded-lg shadow-sm">
+<!-- <div class="bg-white rounded-lg shadow-sm">
   <div class="p-6">
     <h3 class="text-lg font-medium mb-4">수업 이력</h3>
     <div class="space-y-4">
@@ -172,4 +177,4 @@
       {/each}
     </div>
   </div>
-</div>
+</div> -->

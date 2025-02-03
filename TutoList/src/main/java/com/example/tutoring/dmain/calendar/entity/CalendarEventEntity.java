@@ -3,7 +3,7 @@ package com.example.tutoring.dmain.calendar.entity;
 import java.time.LocalDateTime;
 
 import com.example.tutoring.cmmn.entity.BaseEntity;
-import com.example.tutoring.dmain.students.entity.LessonEntity;
+import com.example.tutoring.dmain.lessons.entity.LessonEntity;
 import com.example.tutoring.dmain.user.entity.UserEntity;
 
 import jakarta.persistence.Column;

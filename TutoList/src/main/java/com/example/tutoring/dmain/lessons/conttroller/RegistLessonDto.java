@@ -1,4 +1,4 @@
-package com.example.tutoring.dmain.students.conttroller;
+package com.example.tutoring.dmain.lessons.conttroller;
 
 import java.time.LocalDateTime;
 

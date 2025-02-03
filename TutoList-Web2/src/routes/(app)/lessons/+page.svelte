@@ -1,15 +1,29 @@
 <!-- src/routes/students/+page.svelte -->
 <script>
   import { Search, Plus, Users, Clock } from 'lucide-svelte';
+	import LessonItem from './LessonItem.svelte';
+	import apiClient from '$lib/utils/apiClient';
+	import { onMount } from 'svelte';
+	import LoadingDots from '$lib/components/loading/LoadingDots.svelte';
 
-  const lessons = [
-    { name: "김민준", grade: "고등학교 2학년", subject: "수학", schedule: "월/수 17:00", progress: 85 },
-    { name: "이서연", grade: "중학교 3학년", subject: "영어", schedule: "화/목 15:00", progress: 92 },
-    { name: "박지훈", grade: "고등학교 1학년", subject: "수학", schedule: "월/금 19:00", progress: 78 },
-    { name: "최예린", grade: "중학교 2학년", subject: "영어", schedule: "수/금 16:00", progress: 88 }
-  ];
+  let lessons
 
   let searchQuery = '';
+
+  onMount(async () => {
+    await fetchLessons();
+  });
+
+  async function fetchLessons() {
+    try {
+			const response = await apiClient.get('/lessons');
+
+			lessons = response.data.data;
+		} catch (error) {
+			console.error('Error fetching calendar events:', error);
+			throw error;
+		}
+  }
 </script>
 
 <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
@@ -50,37 +64,31 @@
     <div class="p-6">
       <h2 class="text-lg font-medium mb-4">수업 목록</h2>
       <div class="space-y-4">
-        {#each lessons as lesson}
-          <a 
-            href="/lessons/{lesson.name}" 
-            class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
-          >
-            <div class="flex items-center space-x-4">
-              <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <Users class="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <div class="font-medium">{lesson.name}</div>
-                <div class="text-sm text-gray-500">{lesson.grade}</div>
-              </div>
+        {#if lessons == null}
+          <div class="flex justify-center p-4">
+            <LoadingDots size="sm" />
+          </div>
+        {:else if lessons.length === 0}
+          <div class="py-12 flex flex-col items-center justify-center text-center">
+            <div class="bg-gray-50 p-4 rounded-full mb-4">
+              <Users class="h-12 w-12 text-gray-400" />
             </div>
-            <div class="flex items-center space-x-8">
-              <div class="text-sm">
-                <div class="font-medium">{lesson.subject}</div>
-                <div class="text-gray-500">{lesson.schedule}</div>
-              </div>
-              <div class="w-32">
-                <div class="text-sm font-medium mb-1">진도율</div>
-                <div class="h-2 bg-gray-200 rounded-full">
-                  <div 
-                    class="h-2 bg-blue-600 rounded-full" 
-                    style="width: {lesson.progress}%"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </a>
-        {/each}
+            <h3 class="text-lg font-medium text-gray-900 mb-2">아직 등록된 수업이 없습니다</h3>
+            <p class="text-sm text-gray-500 mb-6 max-w-sm">
+              새로운 수업을 등록하여 학생들의 학습 여정을 시작해보세요.
+            </p>
+            <a href="/lessons/regist" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <Plus class="h-4 w-4 mr-2" />
+              첫 수업 등록하기
+            </a>
+          </div>
+        {:else}
+          <div class="space-y-4">
+            {#each lessons as lesson}
+              <LessonItem lesson={lesson} />
+            {/each}
+          </div>
+        {/if}
       </div>
     </div>
   </div>

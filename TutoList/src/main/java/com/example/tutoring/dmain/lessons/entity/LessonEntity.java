@@ -1,4 +1,7 @@
-package com.example.tutoring.dmain.students.entity;
+package com.example.tutoring.dmain.lessons.entity;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.Comment;
 
@@ -42,4 +45,16 @@ public class LessonEntity extends BaseEntity {
 	private String subject;
 
 	private String memo;
+
+	@Column(nullable = false)
+	private LocalDate startDate;
+
+	@Column(nullable = false)
+	private LocalTime startTime;
+
+	@Column(nullable = false)
+	private Integer duration;
+
+	@Column(nullable = false)
+	private String rrule;
 }
