@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { isLoading } from '$lib/stores/loadingStore';
+import { goto } from '$app/navigation';
 
 const apiClient = axios.create({
     baseURL: '/api', // 모든 요청의 기본 URL
@@ -48,7 +49,7 @@ apiClient.interceptors.response.use(
 
             if (currentPath !== '/login') {
                 // 현재 페이지가 '/login'이 아니면 리다이렉트
-                location.href = '/login';
+                goto('/login');
             }
         }
 

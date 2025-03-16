@@ -6,6 +6,7 @@
   // import { isValidUsername, isValidPassword, isValidEmail, isValidName } from '$utils/validations';
   import TextInputWithIcon from '$lib/components/TextInputWithIcon.svelte';
   import apiClient from '$lib/utils/apiClient';
+	import { goto } from '$app/navigation';
 
   let username = '';
   let password = '';
@@ -55,7 +56,7 @@
         headers: { 'Content-Type': 'application/json' },
       });
       
-      location.href = '/login';
+      goto('/login');
     } catch (error) {
       console.error('Signup error:', error);
       signupErrorMessage = '회원가입에 실패했습니다. 다시 시도해 주세요.';

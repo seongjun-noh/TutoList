@@ -25,6 +25,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 		PrincipalDetails principalDetails = new PrincipalDetails(
 			user.getId(),
 			user.getUsername(),
+			user.getName(),
 			user.getPassword(),
 			user.getRole()
 		);

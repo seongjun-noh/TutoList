@@ -10,6 +10,8 @@
   import { isValidUsername, isValidPassword } from '$utils/validations';
   import TextInputWithIcon from '$lib/components/TextInputWithIcon.svelte';
   import apiClient from '$lib/utils/apiClient';
+	import { user } from '$lib/stores/userStore';
+	import { goto } from '$app/navigation';
 
   let loginErrorMessage = '';
 
@@ -23,13 +25,16 @@
     }
 
     try {
-      await apiClient.post('/login', data, {
+      const response = await apiClient.post('/login', data, {
         disableBlockUI: true,
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      location.href = '/';
+
+      $user = response.data.data;
+
+      goto('/');
     } catch (error) {
       console.error('Login error:', error);
       throw error;

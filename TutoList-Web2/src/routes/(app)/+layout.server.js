@@ -12,8 +12,10 @@ export async function load({ fetch }) {
       throw redirect(302, '/login'); // 서버에서 리다이렉트
     }
 
+    const responseBody = await res.json();
+
     return {
-      sessionValid: true,
+      userInfo: responseBody.data
     };
   } catch (error) {
     console.error('Session check failed:', error);

@@ -1,5 +1,6 @@
 <script>
   import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import apiClient from '$lib/utils/apiClient';
   import { ArrowLeft, Save, X } from 'lucide-svelte';
   import * as RRuleModule from 'rrule';
@@ -114,7 +115,7 @@
       alert("수업을 등록하였습니다.");
 
 			const lessonId = response.data.data.id;
-      location.href = `/lessons/${lessonId}`;
+      goto(`/lessons/${lessonId}`);
 		} catch (error) {
 			console.error('Error fetching calendar events:', error);
 			throw error;

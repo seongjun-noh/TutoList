@@ -12,18 +12,16 @@ import com.example.tutoring.dmain.user.enums.UserRole;
 public class PrincipalDetails implements UserDetails {
 	private Long userId;
 	private String username;
+	private String name;
 	private String password;
 	private UserRole role;
 
-	public PrincipalDetails(Long userId, String username, String password, UserRole role) {
+	public PrincipalDetails(Long userId, String username, String name, String password, UserRole role) {
 		this.userId = userId;
 		this.username = username;
+		this.name = name;
 		this.password = password;
 		this.role = role;
-	}
-
-	public Long getUserId() {
-		return this.userId;
 	}
 
 	@Override
@@ -41,5 +39,13 @@ public class PrincipalDetails implements UserDetails {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
 		auth.add(new SimpleGrantedAuthority(role.toString()));
 		return auth;
+	}
+
+	public Long getUserId() {
+		return this.userId;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 }
