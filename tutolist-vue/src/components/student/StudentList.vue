@@ -44,23 +44,32 @@
 </template>
 
 <script setup>
+import { studentApi } from '@/api/studentApi'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
-
-defineProps({
-  students: {
-    type: Array,
-    required: true,
-    default: () => []
-  }
-})
+import { onMounted, ref } from 'vue'
 
 defineEmits(['select-student'])
+
+const students = ref([])
 
 const formatNextClass = (nextClass) => {
   if (!nextClass) return ''
   return format(new Date(nextClass), 'M월 d일 (E) HH:mm', { locale: ko })
 }
+
+const fetchStudents = async () => {
+  try {
+    const response = await studentApi.getStudents()
+    students.value = response.data.data.content
+  } catch (error) {
+    console.error('학생 목록 가져오기 실패:', error)
+  }
+}
+
+onMounted(() => {
+  fetchStudents()
+})
 </script>
 
 <style>

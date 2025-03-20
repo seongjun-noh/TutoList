@@ -1,8 +1,12 @@
 package com.tutolist.domain.student.entity;
 
+import java.util.List;
+
 import com.tutolist.common.domain.BaseEntity;
+import com.tutolist.domain.relation.StudentSubjectEntity;
 import com.tutolist.domain.user.entity.UserEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "student_profiles")
+@Table(name = "students")
 public class StudentEntity extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -46,7 +51,10 @@ public class StudentEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
-    
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentSubjectEntity> studentSubjects;
+
     public void updateSchoolGrade(String schoolGrade) {
         this.schoolGrade = schoolGrade;
     }
@@ -58,4 +66,8 @@ public class StudentEntity extends BaseEntity {
     public void updateMemo(String memo) {
         this.memo = memo;
     }
-} 
+
+    public void updateStudentSubjects(List<StudentSubjectEntity> studentSubjects) {
+        this.studentSubjects = studentSubjects;
+    }
+}

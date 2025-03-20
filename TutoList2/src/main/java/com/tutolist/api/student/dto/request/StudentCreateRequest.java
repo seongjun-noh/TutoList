@@ -1,5 +1,7 @@
 package com.tutolist.api.student.dto.request;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -16,5 +18,7 @@ public record StudentCreateRequest(
     
     String memo,
     
-    Long userId  // 기존 회원인 경우 userId 입력
+    Long userId,  // 기존 회원인 경우 userId 입력
+
+    List<String> subjects
 ) {} 
