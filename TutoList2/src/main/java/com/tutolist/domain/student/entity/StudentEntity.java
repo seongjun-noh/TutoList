@@ -2,6 +2,8 @@ package com.tutolist.domain.student.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.tutolist.common.domain.BaseEntity;
 import com.tutolist.domain.relation.StudentSubjectEntity;
 import com.tutolist.domain.user.entity.UserEntity;
@@ -53,6 +55,7 @@ public class StudentEntity extends BaseEntity {
     private UserEntity user;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 50)
     private List<StudentSubjectEntity> studentSubjects;
 
     public void updateSchoolGrade(String schoolGrade) {

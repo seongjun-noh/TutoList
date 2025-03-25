@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tutolist.api.student.dto.request.StudentCreateRequest;
 import com.tutolist.api.student.dto.response.StudentResponse;
+import com.tutolist.common.dto.PageDto;
 import com.tutolist.common.error.exception.NotFoundException;
 import com.tutolist.domain.relation.StudentSubjectEntity;
 import com.tutolist.domain.student.entity.StudentEntity;
@@ -63,17 +64,29 @@ public class StudentService {
         return studentMapper.toResponse(savedStudent);
     }
 
-    public Page<StudentResponse> getStudents(Long teacherId, Pageable pageable) {
+    public PageDto<StudentResponse> getStudents(Long teacherId, Pageable pageable) {
         log.info("Retrieving students for teacher: {}", teacherId);
         
         UserEntity teacher = findUserById(teacherId);
 
-        return studentRepository.findAllByTeacher(teacher, pageable)
+        Page<StudentResponse> students = studentRepository.findAllByTeacher(teacher, pageable)
             .map(studentMapper::toResponse);
+
+        return new PageDto<StudentResponse>(students);
     }
     
+    public StudentResponse getStudent(Long teacherId, Long studentId) {
+        log.info("Retrieving student for teacher: {}, student: {}", teacherId, studentId);
+
+        UserEntity teacher = findUserById(teacherId);
+        StudentEntity student = studentRepository.findByTeacherAndId(teacher, studentId)
+            .orElseThrow(() -> new NotFoundException("학생을 찾을 수 없습니다."));
+
+        return studentMapper.toResponse(student);
+    }
+
     private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
     }
-} 
+}

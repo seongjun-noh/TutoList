@@ -32,7 +32,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import StudentFilter from '@/components/student/StudentFilter.vue'
-import StudentList from '@/components/student/StudentList.vue'
+import StudentList from '@/views/StudentList.vue'
 import { useStudentStore } from '@/stores/student'
 
 const router = useRouter()

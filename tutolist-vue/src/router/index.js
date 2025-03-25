@@ -5,7 +5,8 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import StudentManagementView from '@/views/StudentManagementView.vue'
 import StudentCreateView from '@/views/StudentCreateView.vue'
-// import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import StudentDetail from '@/views/StudentDetail.vue'
+import LessonCalView from '@/views/LessonCalView.vue'
 import EmptyLayout from '@/layouts/EmptyLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
@@ -43,6 +44,24 @@ const router = createRouter({
           props: {
             activeMenu: 'students',
             title: '새 학생 등록'
+          }
+        },
+        {
+          path: 'students/:id',
+          name: 'student-detail',
+          component: StudentDetail,
+          props: {
+            activeMenu: 'students',
+            title: '학생 상세 정보'
+          }
+        },
+        {
+          path: 'lessons',
+          name: 'lessons',
+          component: LessonCalView,
+          props: {
+            activeMenu: 'lessons',
+            title: '수업 일정'
           }
         }
       ]

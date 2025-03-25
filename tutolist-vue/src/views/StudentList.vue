@@ -40,6 +40,12 @@
         </div>
       </div>
     </div>
+
+    <StudentDetail 
+      :student-id="selectedStudentId"
+      @edit-student="handleEditStudent"
+      @delete-student="handleDeleteStudent"
+    />
   </div>
 </template>
 
@@ -52,6 +58,7 @@ import { onMounted, ref } from 'vue'
 defineEmits(['select-student'])
 
 const students = ref([])
+const selectedStudentId = ref(null)
 
 const formatNextClass = (nextClass) => {
   if (!nextClass) return ''
@@ -65,6 +72,14 @@ const fetchStudents = async () => {
   } catch (error) {
     console.error('학생 목록 가져오기 실패:', error)
   }
+}
+
+const handleEditStudent = () => {
+  // 학생 정보 수정 로직
+}
+
+const handleDeleteStudent = () => {
+  // 학생 삭제 후 처리 로직
 }
 
 onMounted(() => {
